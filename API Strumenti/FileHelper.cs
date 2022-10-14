@@ -9,8 +9,8 @@ namespace API_Strumenti
             "\\Esercizi\\MusicInstrumentsDB\\StrumentiMusicali.txt";
         public static MusicInstrument AddInstrument(MusicInstrument musicInstrument)
         {
-            var fileContent = File.ReadAllText(_path);
-            if (fileContent == string.Empty)
+            var fileContent = ReadAndDeserializeFile();
+            if (fileContent == null)
             {
                 List<MusicInstrument> list = new List<MusicInstrument>();
                 list.Add(musicInstrument);
@@ -18,9 +18,11 @@ namespace API_Strumenti
                 File.WriteAllText(_path, jsonInstruments);
                 return musicInstrument;
             }
-            var musicInstrumentsDeserialize = JsonSerializer.Deserialize<List<MusicInstrument>>(fileContent);
-            musicInstrumentsDeserialize.Add(musicInstrument);
-            var SerializedList = JsonSerializer.Serialize(musicInstrumentsDeserialize);
+            //var musicInstrumentsDeserialize = JsonSerializer.Deserialize<List<MusicInstrument>>(fileContent);
+            //musicInstrumentsDeserialize.Add(musicInstrument);
+            var instrumentList = fileContent.ToList();
+            instrumentList.Add(musicInstrument);
+            var SerializedList = JsonSerializer.Serialize(instrumentList);
             File.WriteAllText(_path, SerializedList);
             return musicInstrument;
         }
@@ -32,6 +34,21 @@ namespace API_Strumenti
                 throw new Exception("Niente strumenti");
             }
             return musicInstrumentsDeserialize;
+        }
+        public static MusicInstrument GetByName(string name)
+        {
+            var instrumentList = ReadAndDeserializeFile().ToList();
+            return instrumentList.FirstOrDefault(instrument => instrument.Name.Equals(name));
+        }
+        public static 
+        private static IEnumerable<MusicInstrument> ReadAndDeserializeFile()
+        {
+            var fileContent = File.ReadAllText(_path);
+            if(fileContent == string.Empty)
+            {
+                return null;
+            }
+            return JsonSerializer.Deserialize<List<MusicInstrument>>(fileContent);
         }
 
     }

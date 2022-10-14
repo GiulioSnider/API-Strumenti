@@ -19,5 +19,21 @@ namespace API_Strumenti.Controllers
         {            
             return Ok(FileHelper.AddInstrument(musicInstrument));
         }
+
+        [HttpGet("name/{name}")]
+        public IActionResult GetByName(string name)
+        {
+            if (FileHelper.GetByName(name) is null)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            return NoContent();
+        }
     }
 }
