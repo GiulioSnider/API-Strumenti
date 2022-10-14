@@ -61,18 +61,18 @@ namespace API_Strumenti.Controllers
             switch (filter)
             {
                 case "Name":
-                    {
-                        var resultInstrument = FileHelper.GetMusicInstruments().ToList().SingleOrDefault(instrument => instrument.Name.Equals(parameter));
+                    {                       
+                        var resultInstrument = FileHelper.GetMusicInstruments().ToList().Where(instrument => instrument.Name == parameter);
                         return Ok(resultInstrument);
                     }
                 case "Model":
                     {
-                        var resultInstrument = FileHelper.GetMusicInstruments().ToList().SingleOrDefault(instrument => instrument.Model.Equals(parameter));
+                        var resultInstrument = FileHelper.GetMusicInstruments().ToList().Where(instrument => instrument.Model.Equals(parameter));
                         return Ok(resultInstrument);
                     }
                 case "BrandName":
                     {
-                        var resultInstrument = FileHelper.GetMusicInstruments().ToList().SingleOrDefault(instrument => instrument.BrandName.Equals(parameter));
+                        var resultInstrument = FileHelper.GetMusicInstruments().ToList().Where(instrument => instrument.BrandName.Equals(parameter));
                         return Ok(resultInstrument);
                     }
                 default:
