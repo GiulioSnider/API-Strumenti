@@ -10,21 +10,22 @@ namespace API_Strumenti
         public static MusicInstrument AddInstrument(MusicInstrument musicInstrument)
         {
             var fileContent = File.ReadAllText(_path);
+            if (fileContent == null)
+            {
+                List<MusicInstrument> list = new List<MusicInstrument>();
+                list.Add(musicInstrument);
+                var jsonInstruments = JsonSerializer.Serialize(list);
+                File.WriteAllText(_path, jsonInstruments);
+                return musicInstrument;
+            }
             var musicInstrumentsDeserialize = JsonSerializer.Deserialize<List<MusicInstrument>>(fileContent);
-            if (musicInstrumentsDeserialize != null)
-            {
-                musicInstrumentsDeserialize.Add(musicInstrument);
-            }
-            else
-            {
-                throw new Exception("File vuoto!");
-            }
+            musicInstrumentsDeserialize.Add(musicInstrument);
             var SerializedList = JsonSerializer.Serialize(musicInstrumentsDeserialize);
             File.WriteAllText(_path, SerializedList);
             return musicInstrument;
         }
         public static IEnumerable<MusicInstrument> GetMusicInstruments()
-        {            
+        {
             var musicInstrumentsDeserialize = JsonSerializer.Deserialize<List<MusicInstrument>>(File.ReadAllText(_path));
             if (musicInstrumentsDeserialize == null)
             {
@@ -32,6 +33,6 @@ namespace API_Strumenti
             }
             return musicInstrumentsDeserialize;
         }
-        
+
     }
 }
