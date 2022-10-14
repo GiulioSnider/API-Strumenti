@@ -31,6 +31,17 @@ namespace API_Strumenti.Controllers
             return Ok(instrument);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var instrument = FileHelper.GetById(id);
+            if (instrument is null)
+            {
+                return BadRequest();
+            }
+            return Ok(instrument);
+        }
+
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
