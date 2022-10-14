@@ -23,16 +23,21 @@ namespace API_Strumenti.Controllers
         [HttpGet("name/{name}")]
         public IActionResult GetByName(string name)
         {
-            if (FileHelper.GetByName(name) is null)
+            var instrument = FileHelper.GetByName(name);
+            if (instrument is null)
             {
                 return BadRequest();
             }
-            return Ok();
+            return Ok(instrument);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+            if(FileHelper.GetById(id) is null)
+            {
+                return BadRequest();
+            }
             return NoContent();
         }
     }

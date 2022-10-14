@@ -1,5 +1,6 @@
 ﻿using API_Strumenti.Model;
 using System.Text.Json;
+using System.Xml.Linq;
 
 namespace API_Strumenti
 {
@@ -40,7 +41,11 @@ namespace API_Strumenti
             var instrumentList = ReadAndDeserializeFile().ToList();
             return instrumentList.FirstOrDefault(instrument => instrument.Name.Equals(name));
         }
-        public static 
+        public static MusicInstrument GetById(int id)
+        {
+            var instrumentList = ReadAndDeserializeFile().ToList();
+            return instrumentList.FirstOrDefault(instrument => instrument.Id.Equals(id));
+        }
         private static IEnumerable<MusicInstrument> ReadAndDeserializeFile()
         {
             var fileContent = File.ReadAllText(_path);
