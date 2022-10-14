@@ -16,7 +16,7 @@ namespace API_Strumenti.Controllers
 
         [HttpPost]
         public IActionResult AddInstrument([FromBody] MusicInstrument musicInstrument)
-        {            
+        {
             return Ok(FileHelper.AddInstrument(musicInstrument));
         }
 
@@ -53,6 +53,33 @@ namespace API_Strumenti.Controllers
             var instrumentList = FileHelper.GetMusicInstruments().ToList();
             FileHelper.DeleteInstrumentFromList(instrument, instrumentList);
             return NoContent();
+        }
+
+        [HttpGet("getByFilter")]
+        public IActionResult GetByFilter(string filter, string parameter)
+        {
+            switch (filter)
+            {
+                case "Name":
+                    {
+                        var resultInstrument = FileHelper.GetMusicInstruments().ToList().SingleOrDefault(instrument => instrument.Name.Equals(parameter));
+                        return Ok(resultInstrument);
+                    }
+                case "Model":
+                    {
+                        var resultInstrument = FileHelper.GetMusicInstruments().ToList().SingleOrDefault(instrument => instrument.Model.Equals(parameter));
+                        return Ok(resultInstrument);
+                    }
+                case "BrandName":
+                    {
+                        var resultInstrument = FileHelper.GetMusicInstruments().ToList().SingleOrDefault(instrument => instrument.BrandName.Equals(parameter));
+                        return Ok(resultInstrument);
+                    }
+                default:
+                    {
+                        return BadRequest();
+                    }
+            }
         }
     }
 }
