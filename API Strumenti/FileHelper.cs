@@ -10,7 +10,7 @@ namespace API_Strumenti
         public static MusicInstrument AddInstrument(MusicInstrument musicInstrument)
         {
             var fileContent = File.ReadAllText(_path);
-            if (fileContent == null)
+            if (fileContent == string.Empty)
             {
                 List<MusicInstrument> list = new List<MusicInstrument>();
                 list.Add(musicInstrument);
