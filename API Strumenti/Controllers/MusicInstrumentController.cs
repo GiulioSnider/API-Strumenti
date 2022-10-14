@@ -34,10 +34,13 @@ namespace API_Strumenti.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            if(FileHelper.GetById(id) is null)
+            var instrument = FileHelper.GetById(id);
+            if (instrument is null)
             {
                 return BadRequest();
             }
+            var instrumentList = FileHelper.GetMusicInstruments().ToList();
+            FileHelper.DeleteInstrumentFromList(instrument, instrumentList);
             return NoContent();
         }
     }

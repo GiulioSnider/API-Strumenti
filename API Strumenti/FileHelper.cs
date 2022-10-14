@@ -23,8 +23,7 @@ namespace API_Strumenti
             //musicInstrumentsDeserialize.Add(musicInstrument);
             var instrumentList = fileContent.ToList();
             instrumentList.Add(musicInstrument);
-            var SerializedList = JsonSerializer.Serialize(instrumentList);
-            File.WriteAllText(_path, SerializedList);
+            SerializeAndWrite(instrumentList);
             return musicInstrument;
         }
         public static IEnumerable<MusicInstrument> GetMusicInstruments()
@@ -46,6 +45,11 @@ namespace API_Strumenti
             var instrumentList = ReadAndDeserializeFile().ToList();
             return instrumentList.FirstOrDefault(instrument => instrument.Id.Equals(id));
         }
+        public static void DeleteInstrumentFromList(MusicInstrument musicInstrument, List<MusicInstrument> musicInstruments)
+        {
+            musicInstruments.Remove(musicInstrument);
+            SerializeAndWrite(musicInstruments);
+        }
         private static IEnumerable<MusicInstrument> ReadAndDeserializeFile()
         {
             var fileContent = File.ReadAllText(_path);
@@ -55,6 +59,10 @@ namespace API_Strumenti
             }
             return JsonSerializer.Deserialize<List<MusicInstrument>>(fileContent);
         }
-
+        private static void SerializeAndWrite(List<MusicInstrument> musicInstruments)
+        {
+            var SerializedList = JsonSerializer.Serialize(musicInstruments);
+            File.WriteAllText(_path, SerializedList);
+        }
     }
 }
